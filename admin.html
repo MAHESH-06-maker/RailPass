@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailPass - Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css"> <!-- optional -->
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#Applications">Applications</a>
+    </nav>
+  </header>
+
+  <section id="Applications" class="container">
+    <h1>All RailPass Applications</h1>
+    <button onclick="logout()">Logout</button>
+
+    <table border="1" cellpadding="10" cellspacing="0" id="appTable">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Nearest Station</th>
+          <th>Class</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th>Applied On</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be added dynamically -->
+      </tbody>
+    </table>
+  </section>
+
+  <script>
+    // Check admin login
+    const isAdmin = localStorage.getItem("admin");
+    if (!isAdmin) {
+      window.location.href = "login.html"; // redirect if not admin
+    }
+
+    function logout() {
+      localStorage.removeItem("admin");
+      window.location.href = "login.html";
+    }
+
+    // Fetch all applications from server
+    async function loadApplications() {
+      try {
+        const res = await fetch("http://localhost:5000/applications");
+        const data = await res.json();
+
+        const tbody = document.querySelector("#appTable tbody");
+        tbody.innerHTML = "";
+
+        data.forEach(app => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${app.username}</td>
+            <td>${app.nearestStation}</td>
+            <td>${app.preferredClass}</td>
+            <td>${app.duration}</td>
+            <td>${app.status}</td>
+            <td>${new Date(app.created_at).toLocaleString()}</td>
+            <td>
+              ${app.status === "Pending" ? `
+                <button onclick="updateStatus(${app.id}, 'Approved')">Approve</button>
+                <button onclick="updateStatus(${app.id}, 'Rejected')">Reject</button>
+              ` : "-"}
+            </td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error("Error loading applications:", err);
+      }
+    }
+
+    // Update status of an application
+    async function updateStatus(id, newStatus) {
+      try {
+        const res = await fetch(`http://localhost:5000/application/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus })
+        });
+
+        const data = await res.json();
+        alert(data.message || data.error);
+        loadApplications(); // refresh table
+      } catch (err) {
+        console.error("Error updating status:", err);
+      }
+    }
+
+    loadApplications();
+  </script>
+</body>
+</html>
+s

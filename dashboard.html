@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailPass - Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+  <!-- Top Header -->
+  <header style="color: #e9d9ad;">
+    <nav>
+      <h2 style="font-family: serif; font-size: 30px; color: #e9d9ad;">RailPass</h2>
+      <a href="#Home">Home</a>
+      <a href="#Profile">Profile</a>
+      <a href="#Application">Application</a>
+      <a href="#Applications">My Applications</a>
+    </nav>
+  </header>
+  
+
+  <!-- Wrapper contains all main content -->
+  <div class="wrapper">
+    <!-- HOME SECTION -->
+    <section id="Home" class="container">
+      <h1 id="welcomeMsg"></h1>
+      <p>You are now logged in successfully.</p>
+      <div class="actions">
+        <button onclick="logout()">Logout</button>
+      </div>
+    </section>
+
+    <!-- DASHBOARD SECTION (Profile + Application side by side) -->
+    <div class="dashboard">
+      <!-- PROFILE -->
+      <section id="Profile">
+        <h2>Profile Information</h2>
+        <label for="FirstName">First Name: </label>
+        <input type="text" id="FirstName"><br>
+
+        <label for="FatherName">Father's Name: </label>
+        <input type="text" id="FatherName"><br>
+
+        <label for="LastName">Last Name: </label>
+        <input type="text" id="LastName"><br>
+
+        <label for="Loc">Your Nearest Rly. Station: </label>
+        <input type="text" id="Loc"><br>
+
+        <button onclick="saveProfile()">Save / Update</button>
+      </section>
+
+      <!-- APPLICATION -->
+      <section id="Application">
+        <h2>RailPass Application</h2>
+
+        <legend>Which class would you prefer?</legend>
+        <select id="dropdown">
+          <option value="">Select your preferred class</option>
+          <option value="First Class">First Class</option>
+          <option value="Second Class">Second Class</option>
+        </select>
+
+        <br><br>
+
+        <legend>What duration would you prefer?</legend>
+        <select id="dropdown2">
+          <option value="">Select your preferred duration</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Quarterly">Quarterly</option>
+        </select>
+
+        <br><br>
+        <button onclick="applyRailPass()">Apply</button>
+      </section>
+    </div>
+
+    <!-- APPLICATIONS LIST -->
+    <section id="Applications" class="container">
+      <h1>Your Applications</h1>
+      <table border="1" cellpadding="10" cellspacing="0" id="appTable">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Nearest Station</th>
+            <th>Class</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th>Applied On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be added dynamically -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- SCRIPT SECTION -->
+  <script>
+  const username = localStorage.getItem("username");
+  if (username) {
+    document.getElementById("welcomeMsg").innerText = `Welcome, ${username}! 🚆`;
+    loadProfile();
+  } else {
+    window.location.href = "login.html";
+  }
+
+  function logout() {
+    localStorage.removeItem("username");
+    window.location.href = "login.html";
+  }
+
+  async function loadProfile() {
+    try {
+      const res = await fetch(`http://localhost:5000/profile/${username}`);
+      const data = await res.json();
+      if (data.error) return;
+
+      document.getElementById("FirstName").value = data.firstName || "";
+      document.getElementById("FatherName").value = data.fatherName || "";
+      document.getElementById("LastName").value = data.lastName || "";
+      document.getElementById("Loc").value = data.nearestStation || "";
+    } catch (err) {
+      console.error("Error loading profile:", err);
+    }
+  }
+
+  async function saveProfile() {
+    const firstName = document.getElementById("FirstName").value;
+    const fatherName = document.getElementById("FatherName").value;
+    const lastName = document.getElementById("LastName").value;
+    const nearestStation = document.getElementById("Loc").value;
+
+    try {
+      const res = await fetch("http://localhost:5000/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, firstName, fatherName, lastName, nearestStation })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+    } catch (err) {
+      console.error("Error saving profile:", err);
+    }
+  }
+
+  async function applyRailPass() {
+    const preferredClass = document.getElementById("dropdown").value;
+    const duration = document.getElementById("dropdown2").value;
+    const nearestStation = document.getElementById("Loc").value;
+
+    if (!preferredClass || !duration || !nearestStation) {
+      alert("Please fill in all details before applying!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/application", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, nearestStation, preferredClass, duration })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+    } catch (err) {
+      console.error("Error applying for RailPass:", err);
+    }
+  }
+
+  async function loadApplications() {
+    try {
+      const res = await fetch(`http://localhost:5000/application/${username}`);
+      const data = await res.json();
+      const tbody = document.querySelector("#appTable tbody");
+      tbody.innerHTML = "";
+
+      data.forEach(app => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${app.username}</td>
+          <td>${app.nearestStation}</td>
+          <td>${app.preferredClass}</td>
+          <td>${app.duration}</td>
+          <td>${app.status}</td>
+          <td>${new Date(app.created_at).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error("Error loading applications:", err);
+    }
+  }
+
+  loadApplications();
+  </script>
+</body>
+</html>

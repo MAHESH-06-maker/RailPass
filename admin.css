@@ -1,0 +1,216 @@
+
+/* ==========================================
+   RAILPASS — Admin Dashboard (Green-Gold Theme)
+   Heritage-inspired visuals with white overlay
+========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@400;500&display=swap');
+
+:root {
+  --primary-green: #1a6548;       /* RailPass Green */
+  --accent-gold: #c2a65c;         /* Brass Accent */
+  --ivory: #f9f8f4;               /* Soft White */
+  --text-dark: #1a1a1a;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+/* ===== Base Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: url("hero.png") no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text-dark);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ===== White Overlay Layer ===== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6); /* soft white veil */
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+/* ===== Header ===== */
+header {
+  background: var(--primary-green);
+  color: var(--ivory);
+  padding: 15px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10; /* above overlay */
+}
+
+nav a {
+  color: var(--ivory);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  font-family: var(--font-heading);
+}
+
+nav a:hover {
+  color: var(--accent-gold);
+}
+
+/* ===== Main Section ===== */
+.container {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  margin: 80px auto;
+  width: 90%;
+  max-width: 1200px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 40px 50px;
+}
+
+.container h1 {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--primary-green);
+  margin-bottom: 25px;
+}
+
+/* ===== Logout Button ===== */
+button[onclick="logout()"] {
+  background: linear-gradient(135deg, var(--primary-green), #00603d);
+  color: var(--ivory);
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  float: right;
+  margin-bottom: 20px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+button[onclick="logout()"]:hover {
+  background: linear-gradient(135deg, #008f4d, #004f31);
+  transform: translateY(-2px);
+}
+
+/* ===== Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ivory);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background: var(--primary-green);
+  color: var(--ivory);
+  font-family: var(--font-heading);
+}
+
+th, td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(194, 166, 92, 0.3);
+  font-size: 0.95rem;
+}
+
+th {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+tr:hover {
+  background: rgba(194, 166, 92, 0.08);
+}
+
+/* ===== Action Buttons ===== */
+td button {
+  background: var(--accent-gold);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+td button:hover {
+  background: #b39345;
+  transform: translateY(-2px);
+}
+
+/* Rejected Button */
+td button:nth-child(2) {
+  background: #d9534f;
+}
+
+td button:nth-child(2):hover {
+  background: #c9302c;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .container {
+    padding: 25px;
+    width: 95%;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    border: none;
+    padding: 10px 0;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--primary-green);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  td button {
+    display: inline-block;
+    margin-top: 8px;
+  }
+}
+
+/* ===== Smooth Scroll ===== */
+html {
+  scroll-behavior: smooth;
+}

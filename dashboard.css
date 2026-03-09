@@ -1,0 +1,266 @@
+
+/* ===== RailPass Dashboard Styling (Green-Gold Premium Theme) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Background & Structure */
+body {
+  background: url("hero.png") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* White overlay for clean look */
+.wrapper {
+  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 90px;
+  padding-bottom: 50px;
+  backdrop-filter: blur(2px);
+}
+
+/* ===== Header Bar ===== */
+header {
+  background: #004f3f;
+  font-family: 'Playfair Display', serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 60px;
+}
+
+/* Premium Gold-Gradient Header Text */
+nav h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #e9d9ad, #f5e6b8, #e9d9ad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+nav a {
+  text-decoration: none;
+  color: #e9d9ad;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #fff5d9;
+}
+
+/* ===== Home Section ===== */
+#Home {
+  text-align: center;
+  padding: 40px;
+}
+
+#Home h1 {
+  font-family: 'Playfair Display', serif;
+  color: #004f3f;
+  font-size: 42px;
+}
+
+#Home p {
+  color: #333;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.actions button {
+  margin-top: 20px;
+  background: #01715b;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.actions button:hover {
+  background: #00985c;
+}
+
+/* ===== Dashboard Layout ===== */
+.dashboard {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 40px 80px;
+  flex-wrap: wrap;
+}
+
+/* ===== Profile Box ===== */
+#Profile {
+  background: #fcfbf5;
+  flex: 1;
+  min-width: 350px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#Profile h2 {
+  font-family: 'Playfair Display', serif;
+  color: #004f3f;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#Profile label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+#Profile input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgb(243, 231, 163);
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+#Profile button {
+  display: block;
+  margin: 20px auto 0;
+  background: #01715b;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+#Profile button:hover {
+  background: #00a25e;
+}
+
+/* ===== Application Box ===== */
+#Application {
+  background:#fcfbf5;
+  flex: 1.2;
+  min-width: 350px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#Application h2 {
+  font-family: 'Playfair Display', serif;
+  color: #004f3f;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+#Application legend {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+#Application select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgb(243, 231, 163);
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+#Application button {
+  display: block;
+  margin: 20px auto 0;
+  background: #01715b;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+#Application button:hover {
+  background: #00a25e;
+}
+
+/* ===== Applications Table ===== */
+#Applications {
+  background:#fcfbf5;
+  margin: 40px 80px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#Applications h1 {
+  font-family: 'Playfair Display', serif;
+  color: #004f3f;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#appTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#appTable th {
+  background: #01715b;
+  color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+#appTable td {
+  padding: 10px;
+  border-bottom: 1px solid black;
+  text-align: center;
+}
+
+#appTable tr:hover {
+  background: rgba(0, 127, 78, 0.1);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+    padding: 30px;
+  }
+
+  #Applications {
+    margin: 30px;
+  }
+}
+

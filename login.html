@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailPass - Login/Register</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="icon" type="images/png" href="image.png">
+</head>
+<body>
+  <div class="header">
+  <h1 style="color: wheat;">RailPass</h1>
+</div>
+  <!-- Split Layout Container -->
+  <div class="container">
+    <div class="text-section">
+      <h1 style="font-size: 70px;">Welcome to RailPass</h1>
+      <pre style="font-family: sans-serif;">
+        Experience a secure and paperless railway concession
+        system for students & institutions.Login or register 
+        to manage your digital passes effortlessly.</pre>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2>Login</h2>
+      <label for="loginUsername">Username</label>
+      <input type="text" id="loginUsername" placeholder="Enter username">
+
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter password">
+
+      <br><br>
+      <label>
+        <input type="radio" name="role" value="student" checked> Student
+      </label>
+      <label>
+        <input type="radio" name="role" value="admin"> Admin
+      </label>
+
+      <br><br>
+      <button type="submit" id="loginBtn">Login</button>
+      <p class="toggle">Don’t have an account? 
+        <a href="#" onclick="showRegister()">Register</a>
+      </p>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" style="display:none;">
+      <h2>Register</h2>
+      <label for="regUsername">Username</label>
+      <input type="text" id="regUsername" placeholder="Choose a username">
+
+      <label for="regEmail">Email</label>
+      <input type="email" id="regEmail" placeholder="Enter your email">
+
+      <label for="regPassword">Password</label>
+      <input type="password" id="regPassword" placeholder="Create a password">
+
+      <button type="submit" id="registerBtn">Register</button>
+      <p class="toggle">Already have an account? 
+        <a href="#" onclick="showLogin()">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scroll Info Section -->
+  <section class="info-section">
+  <div class="info-content">
+    <div class="text-box">
+      <h2 style="font-family: serif; color: #e9d9ad;">How RailPass Works</h2>
+      <br>
+      <div class="steps">
+        <div class="step">
+          <h3  style="color: #e9d9ad;">1. Student Registration</h3>
+          <p style="color: #e9d9ad;">Students create accounts and submit required documents for verification.</p>
+        </div>
+        <div class="step">
+          <h3 style="color: #e9d9ad;">2. College Verification</h3>
+          <p style="color: #e9d9ad;">Colleges validate and approve applications instantly through a secure admin panel.</p>
+        </div>
+        <div class="step">
+          <h3 style="color: #e9d9ad;">3. Digital Pass Issuance</h3>
+          <p style="color: #e9d9ad;">Approved users receive a digital concession letter with a QR code.</p>
+        </div>
+        <div class="step">
+          <h3 style="color: #e9d9ad;">4. Railway Verification</h3>
+          <p style="color: #e9d9ad;">Present the digital pass at railway counters for quick and verified approval.</p>
+        </div>
+      </div>
+    </div>
+    <div class="image-box">
+      <img src="card.png" alt="RailPass Illustration">
+    </div>
+  </div>
+</section>
+
+
+  <script>
+    function showRegister() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("registerForm").style.display = "block";
+    }
+    function showLogin() {
+      document.getElementById("registerForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    }
+
+    // Register event
+    document.getElementById("registerBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("regUsername").value;
+      const email = document.getElementById("regEmail").value;
+      const password = document.getElementById("regPassword").value;
+
+      const res = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await res.json();
+      alert(data.message || data.error);
+    });
+
+    // Login event
+    document.getElementById("loginBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("loginUsername").value;
+      const password = document.getElementById("loginPassword").value;
+      const role = document.querySelector("input[name='role']:checked").value;
+
+      const res = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password, role })
+      });
+
+      const data = await res.json();
+
+      if (data.message) {
+        if (role === "student") {
+          localStorage.setItem("username", username);
+          window.location.href = "dashboard.html";
+        } else if (role === "admin") {
+          localStorage.setItem("admin", "true");
+          window.location.href = "admin.html";
+        }
+      } else {
+        alert(data.error);
+      }
+    });
+  </script>
+</body>
+</html>
